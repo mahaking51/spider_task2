@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PageHub</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+body{
+    background-color: #f7f7f7;
+}
+.sidebar{
+    display: inline;
+    width:20%;
+    border-style: solid;
+    border-radius: 0.5rem;;
+    border-color: #dbdbdb;
+
+}
+.sidebarOptions{
+    display:block;
+    /* height:20%; */
+    padding:0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    /* margin-top: 1.2rem;
+    margin-bottom: 1.2rem; */
+}
+.sidebarOptions:hover{
+    background-color: #e4e4e4;
+    cursor:pointer;
+}
+#sideContent{
+    display: inline;
+    padding:2%;
+    border-style: solid;
+    border-radius: 0.5rem;;
+    border-color: #dbdbdb;
+}
+h1{
+    text-align: center;
+}
+h2{
+    text-align: center;
+}
+
+#dp{
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+#main{
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top:1.5rem;
+    height:100%;
+
+}
+.dashboard{
+margin-left: 3rem;;
+margin-right: 3rem;;
+
+}
+#profilePic{
+    display: block;
+    margin:auto;
+    margin-bottom: 1.5rem;;
+}
+#follow{
+    margin-left:25%;
+    margin-top: 2rem;
+    width:50%;
+    text-align: center;
+}
+h3{
+    font-weight: 300;
+}
+h4{
+    font-weight: 400;
+}
+#userPic{
+    margin-left: 28%;
+    margin-bottom: 1.2rem;;
+}
+#mode{
+    display: inline;
+    margin-left: 75%;
+    margin-right: 1.2rem;
+    cursor: pointer;
+}
+a{
+    margin-left:40%;
+    font-size: 1.2rem;
+}
+#editProfile{
+    margin-left:30%;
+    border-color: #dbdbdb;
+}
+#header{
+    margin-top: 1.2rem;
+    margin-bottom: 1.2rem;
+}
+#newArticle{
+    margin-top: 4rem;;
+}
+
+.dark-mode {
+  background-color:#323232;
+  color: #a7e9af;
+}
+#new{
+    width:50%;
+    margin:auto;
+    margin-top: 4rem;;
+
+}
+.dark-mode .sidebarOptions:hover{
+    background-color: #232020;
+    cursor:pointer;
+}
+ .dark-mode hr{
+    border-color: black;
+}
+.dark-mode li{
+    border-color: black;
+    background-color: #323232;
+
+}
+.dark-mode textarea{
+    background-color: #323232;
+ 
+}
+.dark-mode #editProfile{
+    background-color: #323232;
+    border-color: #3797a4;
+    color:#3797a4;
+    font-weight: 500;
+}
+.dark-mode #editProfile:hover{
+    background-color: #3797a4;
+    border-color: #3797a4;
+    color:white;
+    font-weight: 500;
+}
+.dark-mode #newArticle{
+    background-color: #323232;
+    border-color: black;
+
+}
+.dark-mode #newArticle:hover{
+    background-color: #232020;
+    border-color: black;
+}
+.dark-mode input{
+    background-color: #323232;
+
+}
+#left{
+    min-height: 750px;
+}
+    </style>
+    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+
+</head>
+<body>
+   
+    <section id='main' >
+    <div class="row dashboard">
+        <div class='container sidebar col-3 ' id='left'>
+            <div class='container'id='dp'>
+                <img src="<%=url%>" alt="" id='userPic'>
+                <% if(cond){ %>
+                <h1 id='nameHead'><%=name%></h1> 
+
+                <button class="btn btn-light" id='editProfile'>Edit Profile</button>
+                <a href="/home/<%=name%>">Home</a>
+                <% } %>
+                <% if(!cond){ %>
+
+                <h1 id='nameHead'><%=name%></h1> 
+                <a href="javascript:history.back()">Home</a>
+                <% } %>
+
+            </div>
+            <div class="mode">
+                <h1 id='mode'> ☾ </h1>
+            </div>
+            <hr>
+            <div class='container sidebarOptions' id='task1'><h3 id='taskh1'>Profile</h3></div>
+            <hr>
+           <% if(cond){%>
+            <div class='container sidebarOptions' id='task2'><h3 id='taskh2'>Manage ur articles</h3></div>
+            <hr>
+    
+            <div class='container sidebarOptions' id='task3'><h3 id='taskh3'>Notifications</h3></div>
+            <hr>
+
+            <div class='container sidebarOptions' id='task4'><h3 id='taskh4'>Log Out</h3></div>
+            <% } %>
+
+        </div>
+
+        <div class='container-lg col-9 Task1' id='sideContent' style='overflow-y: auto; overflow-x: hidden;'>
+            
+            <div class="container" id="profileDetails">
+                <h1><%=name%></h1>
+                <table id="follow">
+                    <tr>
+                        <td><h5>Followers</h5></td>
+                        <td><h5>Following</h5></td>
+                    </tr>
+                    <tr>
+                        <td id='followers'></td>
+                        <td id='followings'></td>
+                    </tr>
+                </table>
+                <% if(cond){ %>
+                <button class='btn btn-block btn-primary' id='newArticle'><i class="fas fa-pencil-alt fa-fw mr-2"></i>Write a new Article</button>
+                <% } %>
+               <% if(condFollow){ %>
+                <form action="/follow" method='post'>
+                <button class='btn btn-block btn-primary' id='new' name='submit' type='submit' value='<%=name%>,<%=user%>'>Follow</button>
+                </form>
+                <%}%>
+                <div class='container' style="margin-top: 2rem;">
+                    <h4>Recent Articles:</h4>
+                    <div id='recentArticles' style='margin-top: 1.2rem;'>
+                    <ul class="list-group">
+                    <% for(var i=0;i<recent.length;i++){ %>
+                        <li class="list-group-item"><h6><%=recent[i].head%></h6></li>
+                    <%}%>
+                    </ul>
+                    </div>
+                </div>
+                </div>
+                <div class="container" id='articleWrite' style='display: none;'>
+                    <a href=""> <h4> < back </h4> </a>
+                    <form action='/publish' method='post'>
+                    <input type="text" class='form-control'placeholder="Heading" id='header' name='heading' required>
+                    <textarea class="form-control" id="exampleFormControlTextarea-1" rows="10" placeholder="content" name='content' required></textarea>
+                    <button class='btn btn-success' style='margin-top: 1.2rem;'type="submit" name='submit' value='<%=name%>'>Publish</button>
+                    <script>
+                        CKEDITOR.replace( 'exampleFormControlTextarea-1' );
+                    </script>
+                </form>
+                </div>
+        </div>
+        <div class='container-lg col-9 Task2' id='sideContent' style='display:none; overflow-y: auto; overflow-x: hidden;min-height: 750px;'>
+            <h1>Edit Your Articles here</h1>
+            <ul class="list-group">
+                <%if(recent.length===0){%>
+                    <h4 style='margin-top: 10rem; text-align: center; color:grey;'>You havent published any Articles</h4>
+                <%}%>
+                <% for(var i=0;i<recent.length;i++){ %>
+                <li class="list-group-item"><p style='display:inline; margin-left:3rem; font-size: 1.5rem;'><%=recent[i].head%></p><button class="btn btn-success float-right" id='editBtn<%=i%>'style='display:inline'>Edit</button>
+                <form action="/delete" method='post' style="display:inline">
+                <button class="btn btn-danger float-right" style='margin-right:1.5rem;'id='deleteBtn<%=i%>' type="submit" name='submit' value='<%=name%>,<%=recent[i].head%>'>Delete</button></li>
+                </form>
+                <div id="story<%=i%>" style="display: none;">
+                <form action="/modify" method='post'>
+                <textarea class="form-control" id="exampleFormControlTextarea<%=i%>" rows="10" placeholder="content" name='contentupdate' required><%=recent[i].cont%></textarea>
+                <button class='btn btn-success edits' style='margin-top: 1.2rem; margin-bottom: 1.2rem;'type="submit" name='submit' value='<%=name%>,<%=recent[i].head%>'>Publish</button>
+                <script>
+                    CKEDITOR.replace( 'exampleFormControlTextarea<%=i%>' );
+                </script>
+                </form>
+                </div>
+                <%}%>
+            </ul>
+             
+        </div>
+         <% if(cond){ %>
+
+        <div class='container-lg col-9 Task3' id='sideContent' style='display:none;' >
+            <h1 style="margin-top: 2rem;margin-bottom: 4rem;">Notifications </h1>
+            <% for(var i=notes.length-1;i>=0;i--){ %>
+                <h3><%=notes[i]%></h3>
+                <hr>
+            <%}%>
+
+        </div>
+        <%}%>
+        <div class='container-lg col-9 Edit' id='sideContent' style='display:none;' >
+            <h1 style="margin-top: 2rem;margin-bottom: 4rem;">Edit your Profile</h1>
+            <form action="/editprofile" method="post">
+                <label for="">Username</label>
+                <input type="text" class="form-control" id="editname" name='editname'>
+                <label for="">Password</label>
+                <input type="text" class='form-control' id="editname" name="editpwd">
+                <button class="btn btn-success" style="margin-top: 1.2rem;" name='submit' value='<%=name%>'>Submit</button>
+            </form>
+        </div>
+    </div>
+    </section>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script >
+    user=window.location.href;
+    let u,len;
+    a=document.getElementsByClassName('edits');
+    len=a.length
+    $(document).ready(()=>{
+        
+        $.ajax({
+            url:'/follow',
+            type:'GET',
+            dataType:'json',
+            success:(data)=>{
+                for(var i=0;i<data.length;i++){
+                    if(user.includes("http://localhost:3000/visit/")){
+                    u=user.slice(28)
+                    u=u.split('/')
+                    if(data[i].name===u[1]){
+                        if(data[i].followings.includes(u[0])){
+                            document.getElementById("new").disabled=true;
+                            document.getElementById("new").innerHTML="Following ✔️";
+
+                        }
+                    }
+                    
+                    }
+                    if($("#nameHead").html()===data[i].name){
+                        $('#followers').html(data[i].followings.length);
+                        $('#followings').html(data[i].follower.length);
+
+                    }
+                    
+                }
+                
+            }
+        })
+    })
+console.log(len);
+
+    for(let j=0;j<len;j++){
+        document.getElementById('editBtn'+j).addEventListener('click',function(){
+            if(document.getElementById('story'+j).style.display==='block'){
+            document.getElementById('story'+j).style.display='none';
+            document.getElementById('editBtn'+j).innerHTML='edit';
+
+            }
+            else{
+                document.getElementById('story'+j).style.display='block';
+                document.getElementById('editBtn'+j).innerHTML='hide'
+
+
+            }
+            console.log('editBtn0');
+            
+        })
+    }
+    $('#newArticle').click(function(){
+        $("#profileDetails").hide();
+        $('#articleWrite').show();
+    })
+    $('#task2').click(function(){
+        $('.Task2').show();
+        $('#taskh2').css("font-weight","300");
+        $('.Task1').hide();
+        $('.Task3').hide();
+        $('.Task4').hide();
+        $(".Edit").hide();
+
+    })
+    $('#mode').click(function(){
+        document.body.classList.toggle('dark-mode');
+
+    })
+    $('#editProfile').click(function(){
+        $('.Task1').hide();
+        $('.Task3').hide();
+        $('.Task4').hide();
+        $('.Task2').hide();
+        $(".Edit").show();
+
+    })
+    $('#task3').click(function(){
+        $('.Task3').show();
+        $('#taskh3').css("font-weight","300");
+        $(".Edit").hide();
+
+        $('.Task1').hide();
+        $('.Task2').hide();
+        $('.Task4').hide();
+
+    })
+    $('#task4').click(function(){
+        // $('.Task4').show();
+        // $("#taskh4").css("font-weight","500");
+
+        // $('.Task1').hide();
+        // $('.Task3').hide();
+        // $('.Task2').hide();
+        location.href = '/';
+    })
+    $('#task1').click(function(){
+        $('.Task1').show();
+        $("#profileDetails").show();
+        $('#articleWrite').hide();
+        $(".Edit").hide();
+
+        $('#taskh1').css("font-weight","300");
+
+        $('.Task2').hide();
+        $('.Task3').hide();
+        $('.Task4').hide();
+
+    })
+
+
+</script>
+</html>

@@ -1,0 +1,222 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.6">
+    <title>SignUp </title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.4/examples/sign-in/">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles.css">
+    <!-- Favicons -->
+<link rel="apple-touch-icon" href="/docs/4.4/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="/docs/4.4/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/docs/4.4/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="/docs/4.4/assets/img/favicons/manifest.json">
+<link rel="mask-icon" href="/docs/4.4/assets/img/favicons/safari-pinned-tab.svg" color="#563d7c">
+<link rel="icon" href="/docs/4.4/assets/img/favicons/favicon.ico">
+
+<meta name="msapplication-config" content="/docs/4.4/assets/img/favicons/browserconfig.xml">
+<meta name="theme-color" content="#563d7c">
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+
+      }
+      input{
+        margin-bottom:1.2rem;
+        font-size: 1.2rem;
+      }
+      .main{
+        width:100%;
+      }
+      .form-signin{
+        width:55%;
+
+      }
+      .g-recaptcha{
+        margin:1.2rem;
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+  </head>
+  <body class="text-center">
+    <form class="form-signin " id='subscribeForm' action='/' method='post'>
+  <div class="main">
+    <img src="https://img.icons8.com/dusk/100/000000/spiral-bound-booklet.png"/>  
+    <h4>Join PageHub</h4>
+    <h1 class="h3 mb-3 font-weight-normal">Please Register</h1>
+  
+  <label for="inputEmail" class="sr-only">Email address</label>
+  <input type="text" id="inputEmail" class="form-control" placeholder="Username" name="userName" required autofocus autocomplete="off" data-toggle="popover" data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+  <div id='suggestions'></div>
+  <label for="inputPassword" class="sr-only">Password</label>
+  <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>
+  <button class="btn btn-lg btn-primary btn-block" type="submit" id='submitbut'>Sign Up</button>
+  <a href="/signin">Already an user,sign in</a>
+  <p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
+</div>
+</form>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+
+<script>
+  function suggestUsername(fn){
+    arr=["Arrow","Assassin","Avenger",
+"Blaze",
+"Bodhi",
+"Bolt",
+"Boss",
+"Captain",
+"Crimson",
+"Cyborg",
+"Dark",
+"Death",
+"Demon",
+"Destruction",
+"Doom",
+"Doctor",
+"Dragon",
+"Enigma",
+"Fallen",
+"Fate",
+"Flame",
+"Frozen",
+"Ghost",
+"Great",
+"Infinite",
+"Immortal",
+"Killer",
+"Knight",
+"Lightning",
+"Mist",
+"Micro",
+"Neo",
+"Nightmare",
+"Ninja",
+"Outlaw",
+"Prime",
+"Realm",
+"Seeker",
+"Shadow",
+"Silver",
+"Sinister",
+"Slayer",
+"Sniper",
+"Trinity",
+"Zephyr"]
+s1=(fn+Math.round(Math.random()*1000));
+s2=(fn+arr[Math.round(Math.random()*44)]);
+if(s1.length<8){
+  s1=arr[Math.round(Math.random()*44)]+'-'+s1;
+  if(s1.length<8){
+    s1=s1+'-'+arr[Math.round(Math.random()*44)];
+  }
+}
+if(s2.length<8){
+  s2=s2+Math.round(Math.random()*1000)+arr[Math.round(Math.random()*44)];
+}
+    return [s1,s2];
+  }
+    flag=true;
+    $(document).ready(()=>{
+      $("#inputEmail").on('keydown',()=>{
+        $.ajax({
+          url:'users/',
+          type:'GET',
+          dataType:'json',
+          success:(data)=>{
+            found=true
+            suggest=suggestUsername($('#inputEmail').val())
+            if(data.length>=2){
+            while(found){
+              suggest=suggestUsername($('#inputEmail').val())
+              for (var j =0;j<data.length;j++){
+                if(!suggest.includes(data[j].userName)){
+                  found=false;
+                  break;
+                }
+              }
+            }
+          }
+            if( $('#inputEmail').val().split(" ").join('') ==='' ){
+              $('#suggestions').html('')
+            }
+            if(data.length===0){
+              if( $('#inputEmail').val().length<8){
+                  $('#inputEmail').css('background-color','#f3dfe3');
+                  $( "#submitbut" ).prop( "disabled", true );
+                  $('#suggestions').html('Username shd atleast have 8 characters...<br> Some Suggestions: <br>'+suggest)
+                  
+                }
+                else{
+                  $('#inputEmail').css('background-color','#b7efcd');
+                  $( "#submitbut" ).prop( "disabled", false );
+                  $('#suggestions').html('Username available')
+                }
+            }
+            for (var i=0;i<data.length;i++){
+                if( $('#inputEmail').val().length<8){
+                  $('#inputEmail').css('background-color','#f3dfe3');
+                  $( "#submitbut" ).prop( "disabled", true );
+                  $('#suggestions').html('Username shd atleast have 8 characters...<br> Some Suggestions: <br>'+suggest)
+                  break;
+                }
+                if(data[i].userName===$('#inputEmail').val().split(" ").join('') ){
+                  flag=false;
+                  $('#inputEmail').css('background-color','#f3dfe3');
+                  $( "#submitbut" ).prop( "disabled", true );
+                  $('#suggestions').html('Username already taken <br>Some Suggestions: <br>'+suggest)
+                  break;
+                }
+                else{
+                  $('#inputEmail').css('background-color','#b7efcd');
+                  $( "#submitbut" ).prop( "disabled", false );
+                  $('#suggestions').html('Username available')
+
+
+                }
+              } 
+                  if(flag){
+
+                  } 
+                  else{
+
+                  }   
+          }
+        })
+      })
+        // $('#submitbut').click(()=>{
+        //   if(flag){
+        //     console.log('ajax success');
+            
+        //   }
+        //   else{
+        //   }
+        // })
+      
+    })
+</script>
+</html>

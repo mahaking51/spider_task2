@@ -1,0 +1,237 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>PageHub</title>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
+
+    <link href="sticky-footer-navbar.css" rel="stylesheet">
+    <style>
+        #stories{
+            border: solid;
+            padding: 2%;
+            border-color: #dbdbdb;
+            border-radius: 0.35rem;
+        }
+        #dp{
+            margin-right: 8rem;
+            margin-left:8rem;
+        }
+        a, a:hover, a:focus, a:active{
+          text-decoration: none;
+          color:#888888;
+        }
+        #time{
+          text-align: right;
+          margin-left: 3rem;
+          color:#888888;
+
+        }
+        #searchStory{
+          width:300px;
+        }
+    </style>
+  </head>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+  <body>
+
+    <header>
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#" style='margin-left: 10rem;'><img src="https://img.icons8.com/dusk/50/000000/spiral-bound-booklet.png"/>PageHub</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            
+            
+          </ul>
+          <ul class="navbar-nav ml-auto">
+            <% if(condition){ %>
+                <form class="form-inline mt-2 mt-md-0">
+                    <input class="form-control mr-sm-2" type="text" id='searchStory' placeholder="🔍Search" aria-label="Search">
+                  </form>
+            <a href="<%=link%>"><img src="<%=dp%>" alt="" srcset="" id='dp'></a>
+            <%}%>
+            <% if(!condition) { %>
+                <form class="form-inline mt-2 mt-md-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="🔍Search" id='searchStory' aria-label="Search">
+                  </form>
+            <li class="nav-item active" style='margin-right: 1.5rem;'>
+                <a class="nav-link" href="/signin">Sign in</a>
+              </li>
+              <li class="nav-item active" style='margin-right: 3rem;'>
+                <a class="nav-link" href="/signup">Sign up</a>
+              </li>
+            <%}%>
+        </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Begin page content -->
+    <div class="container" id='mainContent'>
+    <%for(var i=0; i <articles.length;i++) {%>
+    <%if(i==0){%>
+    <div class="container" id='stories' style="margin-top: 10%;">
+        <div class="container" >
+          <a href='/visit/<%=articles[i].name%>'><img src="https://ui-avatars.com/api/?name= <%= articles[i].name %> &rounded=true&bold=true&size=40&background=ededed&color=272727" alt="" id='userPic' style='display: inline;'> </a>
+            <p  style='display: inline; margin-left: 2rem;'><h4 style='display:inline'><%=articles[i].head%></h4>- <a href='/visit/<%=articles[i].name%>'><%=articles[i].name%></a></p>
+        </div>
+        <hr>
+        <div class="container" id='story'>
+          <%=articles[i].cont %>
+        </div>
+    </div>
+    <%}%>
+    <%if(i!=0){%>
+        <div class="container" id='stories' style="margin-top: 1.5rem;">
+            <div class="container" >
+              <a href='/visit/<%=articles[i].name%>'><img src="https://ui-avatars.com/api/?name= <%= articles[i].name %> &rounded=true&bold=true&size=40&background=ededed&color=272727" alt="" id='userPic' style='display: inline;'> </a>
+                <p  style='display: inline; margin-left: 2rem;'><h4 style='display:inline'><%=articles[i].head%></h4>- <a href='/visit/<%=articles[i].name%>'><%=articles[i].name%></a></p>
+            </div>
+            <hr>
+            <div class="container" id="story">
+              <%=articles[i].cont %>
+
+            </div>
+            
+            
+        </div>
+        <%}%>
+    <%}%>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+<script>
+  user=window.location.href;
+  usern=user.slice(27)
+  $(document).ready(()=>{
+    console.log(usern);
+    document.getElementById('mainContent').innerHTML="";
+    detect=0;
+    $.ajax({
+      url:"/stories",
+      type:"GET",
+      dataType:"json",
+      success:(data)=>{
+        for(var i=data.length-1;i>=0;i--){
+          if(user.includes('home')){
+            if(usern===data[i].author){
+              link='/userpage/'+data[i].author;
+            }
+            else{
+            link='/visit/'+usern+'/'+data[i].author;
+            }
+          }
+          else{
+            link='/visit/'+data[i].author;
+          }
+            if(detect==0){
+            text='<div class="container" id="stories" style="margin-top: 10%;">\
+        <div class="container" >\
+         <a href='+link+'><img src="https://ui-avatars.com/api/?name= '+data[i].author +' &rounded=true&bold=true&size=40&background=ededed&color=272727" alt="" id="userPic" style="display: inline;"> </a>\
+            <p  style="display: inline; margin-left: 2rem;"><h4 style="display:inline">'+data[i].title+'</h4>- '+'<a href='+link+'>'+data[i].author+'</a>'+'</p>\
+        </div>\
+        <hr>\
+        <div class="container">\
+            '+data[i].story+'\
+            <h5 id="time">'+data[i].time +'</h5>\
+        </div>\
+        </div>'
+        }
+        else{
+          text='<div class="container" id="stories" style="margin-top: 1.5rem; margin-bottom:1rem;">\
+        <div class="container" >\
+          <a href='+link+'> <img src="https://ui-avatars.com/api/?name= '+data[i].author +' &rounded=true&bold=true&size=40&background=ededed&color=272727" alt="" id="userPic" style="display: inline;"> </a>\
+            <p  style="display: inline; margin-left: 2rem;"><h4 style="display:inline">'+data[i].title+'</h4>- '+'<a href='+link+'>'+data[i].author+'</a>'+'</p>\
+        </div>\
+        <hr>\
+        <div class="container">\
+            '+data[i].story+'\
+            <h5 id="time">'+data[i].time +'</h5>\
+        </div>\
+        </div>'
+        }
+        document.getElementById('mainContent').innerHTML+=text;
+        detect++;
+      }
+      }
+    })
+  })
+  $(document).ready(()=>{
+    $("#searchStory").on('keyup',()=>{
+      
+      $.ajax({
+        url:'/stories',
+        type:'GET',
+        dataType:'json',
+        success:(data)=>{
+          console.log($("#searchStory").val());
+
+          document.getElementById('mainContent').innerHTML="";
+          detect=0;
+          for(var i=data.length-1;i>=0;i--){
+          if(user.includes('home')){
+            if(usern===data[i].author){
+              link='/userpage/'+data[i].author;
+            }
+            else{
+            link='/visit/'+usern+'/'+data[i].author;
+            }         
+           }
+          else{
+            link='/visit/'+data[i].author;
+          }
+            if(detect==0){
+            text='<div class="container" id="stories" style="margin-top: 10%;">\
+        <div class="container" >\
+         <a href='+link+'><img src="https://ui-avatars.com/api/?name= '+data[i].author +' &rounded=true&bold=true&size=40&background=ededed&color=272727" alt="" id="userPic" style="display: inline;"> </a>\
+            <p  style="display: inline; margin-left: 2rem;"><h4 style="display:inline">'+data[i].title+'</h4>- '+'<a href='+link+'>'+data[i].author+'</a>'+'</p>\
+        </div>\
+        <hr>\
+        <div class="container">\
+            '+data[i].story+'\
+        <h5 id="time">'+data[i].time +'</h5>\
+        </div>\
+        </div>'
+        }
+        else{
+          text='<div class="container" id="stories" style="margin-top: 1.5rem; margin-bottom:1rem;">\
+        <div class="container" >\
+          <a href='+link+'> <img src="https://ui-avatars.com/api/?name= '+data[i].author +' &rounded=true&bold=true&size=40&background=ededed&color=272727" alt="" id="userPic" style="display: inline;"> </a>\
+            <p  style="display: inline; margin-left: 2rem;"><h4 style="display:inline">'+data[i].title+'</h4>- '+'<a href='+link+'>'+data[i].author+'</a>'+'</p>\
+        </div>\
+        <hr>\
+        <div class="container">\
+            '+data[i].story+'\
+            <h5 id="time">'+data[i].time +'</h5>\
+        </div>\
+        </div>'
+        }
+          if(data[i].title.includes($("#searchStory").val()) || data[i].author.includes($("#searchStory").val())){
+            document.getElementById('mainContent').innerHTML+=text;
+            detect++;
+          }          
+        }
+        if(document.getElementById('mainContent').innerHTML===""){
+          document.getElementById('mainContent').innerHTML="<h1>No results Found</h1>";
+        }
+        }
+      })
+    })
+  })
+</script>
+</html>
