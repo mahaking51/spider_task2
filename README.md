@@ -22,7 +22,9 @@ To install the dependencies and start your application, run these commands in Gi
 $ npm i
 ```
 
-
+```sh
+$ node app.js
+```
 If your application successfully started, you will get the message:
 
 ```sh
