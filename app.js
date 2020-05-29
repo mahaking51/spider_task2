@@ -297,63 +297,71 @@ app.post('/delete',function(req,res){
     res.redirect('/home/'+a[0]);
 })
 app.post('/editprofile',function(req,res){
-    User.updateOne({username:req.body.submit},{username:req.body.editname,pwd:req.body.editpwd},function(err,succ){
-        if(err){
-            console.log(err);
-            
+    User.find({username:req.body.editname},function(err,arr){
+        if(arr.length>0){
+            res.redirect("/userpage/"+req.body.submit);
         }
         else{
-            console.log(succ);
+            User.updateOne({username:req.body.submit},{username:req.body.editname,pwd:req.body.editpwd},function(err,succ){
+                if(err){
+                    console.log(err);
+                    
+                }
+                else{
+                    console.log(succ);
+                    
+                }
+            })
+            Story.updateOne({name:req.body.submit},{name:req.body.editname},function(err,succ){
+                if(err){
+                    console.log(err);
+                    
+                }
+                else{
+                    console.log(succ);
+                    
+                }
+            })
             
+            User.find({following:{$elemMatch:{$in:req.body.submit}}},function(err,arr){
+                for(var i=0;i<arr.length;i++){
+                User.update({following:{$elemMatch:{$in:req.body.submit}}},{$set:{"following.$":req.body.editname}},function(err,succ){
+                    if(err){
+                        console.log(err);
+                        
+                    }
+                    else{
+                        console.log(succ);
+                        
+                    }
+                })
+                Log.update({name:req.body.submit},{name:req.body.editname},function(err,succ){
+                    if(err){
+                        console.log(err);
+                        
+                    }
+                    else{
+                        console.log(succ);
+                        
+                    }
+                })
+                Log.update({statement:{$elemMatch:{$in:req.body.submit}}},{$set:{"statement.$":req.body.editname}},function(err,succ){
+                    if(err){
+                        console.log(err);
+                        
+                    }
+                    else{
+                        console.log(succ);
+                        
+                    }
+                })
+                }
+            })
+            res.redirect('/userpage/'+req.body.editname);
+            
+        
         }
     })
-    Story.updateOne({name:req.body.submit},{name:req.body.editname},function(err,succ){
-        if(err){
-            console.log(err);
-            
-        }
-        else{
-            console.log(succ);
-            
-        }
-    })
-    
-    User.find({following:{$elemMatch:{$in:req.body.submit}}},function(err,arr){
-        for(var i=0;i<arr.length;i++){
-        User.update({following:{$elemMatch:{$in:req.body.submit}}},{$set:{"following.$":req.body.editname}},function(err,succ){
-            if(err){
-                console.log(err);
-                
-            }
-            else{
-                console.log(succ);
-                
-            }
-        })
-        Log.update({name:req.body.submit},{name:req.body.editname},function(err,succ){
-            if(err){
-                console.log(err);
-                
-            }
-            else{
-                console.log(succ);
-                
-            }
-        })
-        Log.update({statement:{$elemMatch:{$in:req.body.submit}}},{$set:{"statement.$":req.body.editname}},function(err,succ){
-            if(err){
-                console.log(err);
-                
-            }
-            else{
-                console.log(succ);
-                
-            }
-        })
-        }
-    })
-    res.redirect('/userpage/'+req.body.editname);
-    
 })
 app.post('/userpage',function(req,res){
     User.updateOne({username:name},{sentMsg:req.body.message,sentMem:req.body.members},function(err){

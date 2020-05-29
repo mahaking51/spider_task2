@@ -285,10 +285,11 @@ a{
             <h1 style="margin-top: 2rem;margin-bottom: 4rem;">Edit your Profile</h1>
             <form action="/editprofile" method="post">
                 <label for="">Username</label>
-                <input type="text" class="form-control" id="editname" name='editname'>
+                <input type="text" class="form-control" id="editname" name='editname' autocomplete="off">
+                <div class="container" id='avail'></div>
                 <label for="">Password</label>
-                <input type="text" class='form-control' id="editname" name="editpwd">
-                <button class="btn btn-success" style="margin-top: 1.2rem;" name='submit' value='<%=name%>'>Submit</button>
+                <input type="password" class='form-control' id="editname" name="editpwd">
+                <button class="btn btn-success" id='submitChange'style="margin-top: 1.2rem;" name='submit' value='<%=name%>'>Submit</button>
             </form>
         </div>
     </div>
@@ -300,6 +301,40 @@ a{
     let u,len;
     a=document.getElementsByClassName('edits');
     len=a.length
+    $(document).ready(()=>{
+        $('#editname').on('keyup',()=>{
+            $('#avail').html('');
+
+            $.ajax({
+            url:"/users",
+            type:'GET',
+            dataType:'json',
+            success:(data)=>{
+               
+                for(var i=0;i<data.length;i++){
+                    if(data[i].userName===$('#editname').val().split(" ").join('')){
+                        $("#editname").css('background-color','#f3dfe3');
+                        $('#avail').html('Username Already Taken!!!');
+                        $("#submitChange").prop('disabled',true);
+                        break;
+                    }
+                    if($('#editname').val().split(" ").join('').length<8){
+                        $("#editname").css('background-color','#f3dfe3');
+                        $('#avail').html('Username is short!!!');
+
+                        $("#submitChange").prop('disabled',true);
+                     }       
+                    else{
+                        $("#editname").css('background-color','#b7efcd');
+                        $("#submitChange").prop('disabled',false);
+
+                    }
+                }                
+            }
+        })
+        })
+        
+    })
     $(document).ready(()=>{
         
         $.ajax({
