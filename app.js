@@ -39,7 +39,7 @@ app.get('/',function(req,res){
     })
 })
 app.get('/home/:name',function(req,res){
-    src="https://ui-avatars.com/api/?name="+name+"&rounded=true&bold=true&size=45&background=ededed&color=272727"
+    src="https://ui-avatars.com/api/?name="+req.params.name+"&rounded=true&bold=true&size=45&background=ededed&color=272727"
     link='/userpage/'+req.params.name;
     Story.find({},function(err,arr){
         res.render('home',{condition:true,name:req.params.name,dp:src,link:link,articles:arr});
@@ -178,7 +178,7 @@ app.get('/userpage/:User',function(req,res){
 
 app.post('/',function(req,res){
 user=new User({
-    username:req.body.userName,
+    username:req.body.userName.split(" ").join(''),
     pwd:req.body.password,
     followers:[],
     following:[]
@@ -298,7 +298,7 @@ app.post('/delete',function(req,res){
 })
 app.post('/editprofile',function(req,res){
     User.find({username:req.body.editname},function(err,arr){
-        if(arr.length>0){
+        if(arr.length>1){
             res.redirect("/userpage/"+req.body.submit);
         }
         else{
