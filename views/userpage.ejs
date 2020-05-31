@@ -259,14 +259,15 @@ a{
         <div class='container-lg col-9 Task1' id='sideContent' style='overflow-y: auto; overflow-x: hidden;'>
             
             <div class="container" id="profileDetails">
+                <%if(condsearch){%>
                 <div class="dropdown">
-                    <div id="myDropdown" class="dropdown-content">
+                    <div id="myDropdown" class="dropdown-content" style="display: block;">
                       <input type="text" placeholder="🔍Search for users" id="myInput" >
                       <div id='res'>
                     </div>
                     </div>
                   </div>
-                  
+                  <%}%>
                 <h1 id='myuser'><%=name%></h1>
                 <table id="follow">
                     <tr>
@@ -360,7 +361,6 @@ a{
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script >
-    document.getElementById("myDropdown").classList.toggle("show");
     user=window.location.href;
     let u,len;
     a=document.getElementsByClassName('edits');
@@ -381,14 +381,13 @@ a{
                 type:'GET',
                 dataType:'json',
                 success:(dat)=>{
-                    console.log(dat);
                     if($('#myInput').val()===undefined){
                         document.getElementById('res').innerHTML='';
 
                     }
                     for(var j=0;j<dat.length;j++){
                         if(dat[j].userName.includes($('#myInput').val()) && !myuser.includes($('#myInput').val())){
-                        document.getElementById('res').innerHTML+='<a href="/visit/'+dat[j].userName+'">'+dat[j].userName+'</a>'
+                        document.getElementById('res').innerHTML+='<a href="/visit/'+myuser+'/'+dat[j].userName+'">'+dat[j].userName+'</a>'
                     }
                     }
                 }

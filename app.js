@@ -55,7 +55,7 @@ app.get('/visit/:username/:name',function(req,res){
     src="https://ui-avatars.com/api/?name="+req.params.name+"&rounded=true&bold=true&size=128&background=ededed&color=272727"
     mainUser=req.params.username;
     Story.find({name:req.params.name},function(err,arr){
-        res.render('userpage',{name: req.params.name,url:src,user:mainUser,cond:false,condFollow:true,recent:arr});
+        res.render('userpage',{name: req.params.name,url:src,user:mainUser,cond:false,condFollow:true,recent:arr,condsearch:false});
     })
 })
 //before signing in
@@ -67,7 +67,7 @@ app.get('/visit/:runn',function(req,res){
     let recent;
     src="https://ui-avatars.com/api/?name="+req.params.runn+"&rounded=true&bold=true&size=128&background=ededed&color=272727"
     Story.find({name:req.params.runn},function(err,arr){
-     res.render('userpage',{name: un,url:src,cond:false,condFollow:false,recent:arr });        
+     res.render('userpage',{name: un,url:src,cond:false,condFollow:false,recent:arr,condsearch:false});        
     })
     
 })
@@ -167,7 +167,7 @@ app.get('/userpage/:User',function(req,res){
         }
         else{
             Story.find({name:un},function(err,arr){
-                res.render('userpage',{name:un,url:src,cond:true,condFollow:false,recent:arr,followers:follower,following:followin,notes:s});
+                res.render('userpage',{name:un,url:src,cond:true,condFollow:false,recent:arr,followers:follower,following:followin,notes:s,condsearch:true});
             })        
         }
     })
