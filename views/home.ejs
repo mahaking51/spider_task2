@@ -38,12 +38,23 @@
         #searchStory{
           width:300px;
         }
+        #searchBox{
+          width:300px;
+          position: absolute;
+          margin-left: 63.2%;;
+          margin-top: 4rem;;
+          background-color: white;
+          z-index: 5;
+          padding: 1rem;
+        }
+        .navbar{
+          z-index:1;
+        }
     </style>
   </head>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 
   <body>
-
     <header>
       <!-- Fixed navbar -->
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -58,14 +69,16 @@
           </ul>
           <ul class="navbar-nav ml-auto">
             <% if(condition){ %>
-                <form class="form-inline mt-2 mt-md-0">
-                    <input class="form-control mr-sm-2" type="text" id='searchStory' placeholder="🔍Search" aria-label="Search">
+                <form class="form-inline mt-2 mt-md-0" >
+                    <input class="form-control mr-sm-2 dropdown-toggle" type="text" id='searchStory' placeholder="🔍Search for stories" aria-label="Search" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   </form>
+              
             <a href="<%=link%>"><img src="<%=dp%>" alt="" srcset="" id='dp'></a>
             <%}%>
+            
             <% if(!condition) { %>
                 <form class="form-inline mt-2 mt-md-0">
-                    <input class="form-control mr-sm-2" type="text" placeholder="🔍Search" id='searchStory' aria-label="Search">
+                    <input class="form-control mr-sm-2" type="text" placeholder="🔍Search for stories " id='searchStory' aria-label="Search"role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   </form>
             <li class="nav-item active" style='margin-right: 1.5rem;'>
                 <a class="nav-link" href="/signin">Sign in</a>
@@ -78,11 +91,11 @@
         </div>
       </nav>
     </header>
-
     <!-- Begin page content -->
+    
     <div class="container" id='mainContent'>
     <%for(var i=0; i <articles.length;i++) {%>
-    <%if(i==0){%>
+    <% if(i==0){ %>
     <div class="container" id='stories' style="margin-top: 10%;">
         <div class="container" >
           <a href='/visit/<%=articles[i].name%>'><img src="https://ui-avatars.com/api/?name= <%= articles[i].name %> &rounded=true&bold=true&size=40&background=ededed&color=272727" alt="" id='userPic' style='display: inline;'> </a>
@@ -180,7 +193,6 @@
         dataType:'json',
         success:(data)=>{
           console.log($("#searchStory").val());
-
           document.getElementById('mainContent').innerHTML="";
           detect=0;
           for(var i=data.length-1;i>=0;i--){
@@ -224,7 +236,7 @@
           if(data[i].title.includes($("#searchStory").val()) || data[i].author.includes($("#searchStory").val())){
             document.getElementById('mainContent').innerHTML+=text;
             detect++;
-          }          
+          }
         }
         if(document.getElementById('mainContent').innerHTML===""){
           document.getElementById('mainContent').innerHTML="<h1>No results Found</h1>";
